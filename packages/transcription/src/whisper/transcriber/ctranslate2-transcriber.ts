@@ -29,8 +29,22 @@ export class Ctranslate2Transcriber extends OpenaiTranscriber {
     const modelArgs = model.path ? [ '--model_directory', model.path ] : [ '--model', model.name ]
     const languageArgs = language ? [ '--language', language ] : []
 
-    if (computeType && ![ 'default', 'auto', 'float32', 'float16', 'bfloat16', 'int16', 'int8', 'int8_float32', 'int8_float16', 'int8_bfloat16' ].includes(computeType)) {
-      this.logger.warn(`Invalid computeType "${computeType}". Expected one of: default, auto, float32, float16, bfloat16, int16, int8, int8_float32, int8_float16, int8_bfloat16 for whisper-ctranslate2. Reverting to default value (--compute_type default)`)
+    const validComputeTypes = [ 
+      'default', 
+      'auto', 
+      'float32', 
+      'float16', 
+      'bfloat16', 
+      'int16', 
+      'int8', 
+      'int8_float32', 
+      'int8_float16', 
+      'int8_bfloat16' 
+    ]
+
+    if (computeType && !validComputeTypes.includes(computeType)) {
+      const validTypesStr = validComputeTypes.join(', ')
+      this.logger.warn(`Invalid computeType "${computeType}". Expected one of: ${validTypesStr}`)
       computeType = null
     }
     

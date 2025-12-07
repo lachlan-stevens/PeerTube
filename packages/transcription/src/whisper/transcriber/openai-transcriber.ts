@@ -22,11 +22,14 @@ export class OpenaiTranscriber extends AbstractTranscriber {
 
     const languageArgs = language ? [ '--language', language ] : []
 
-    if (computeType && ![ 'float16', 'float32' ].includes(computeType)) {
-      this.logger.warn(
-        `Invalid computeType "${computeType}". Expected one of: float16, float32 for openai-whisper`
-      )
-    }    
+    const validComputeTypes = [ 'float16', 'float32' ]
+
+    if (computeType && !validComputeTypes.includes(computeType)) {
+      const validTypesStr = validComputeTypes.join(', ')
+      this.logger.warn(`Invalid computeType "${computeType}". Expected one of: ${validTypesStr}`)
+      computeType = null
+    }
+
     const floatingpointArgs = computeType === 'float32' ? [ '--fp16', 'false' ] : []
 
     this.createRun(runId)

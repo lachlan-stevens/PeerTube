@@ -12,6 +12,7 @@ export class Ctranslate2Transcriber extends OpenaiTranscriber {
   async transcribe ({
     mediaFilePath,
     model = new WhisperBuiltinModel('tiny'),
+    computeType,
     language,
     format,
     transcriptDirectory,
@@ -27,6 +28,7 @@ export class Ctranslate2Transcriber extends OpenaiTranscriber {
 
     const modelArgs = model.path ? [ '--model_directory', model.path ] : [ '--model', model.name ]
     const languageArgs = language ? [ '--language', language ] : []
+    const computeTypeArgs = computeType ? [ '--compute_type', computeType ] : []
 
     this.createRun(runId)
     this.startRun()
@@ -45,6 +47,7 @@ export class Ctranslate2Transcriber extends OpenaiTranscriber {
       'all',
       '--output_dir',
       transcriptDirectory,
+      ...computeTypeArgs,
       ...languageArgs
     ]}`
     this.stopRun()

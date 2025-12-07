@@ -56,6 +56,7 @@ export async function processVideoTranscription (options: ProcessOptions<RunnerJ
       model: config.modelPath
         ? await TranscriptionModel.fromPath(config.modelPath)
         : new WhisperBuiltinModel(config.model),
+      computeType: config.computeType ?? undefined,
       format: 'vtt',
       transcriptDirectory: outputPath
     })

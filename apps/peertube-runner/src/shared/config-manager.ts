@@ -31,6 +31,7 @@ type Config = {
     enginePath: string | null
     model: WhisperBuiltinModelName
     modelPath: string | null
+    computeType: string | null
   }
 }
 
@@ -49,7 +50,8 @@ export class ConfigManager {
       engine: 'whisper-ctranslate2',
       enginePath: null,
       model: 'small',
-      modelPath: null
+      modelPath: null,
+      computeType: null
     },
     registeredInstances: []
   }

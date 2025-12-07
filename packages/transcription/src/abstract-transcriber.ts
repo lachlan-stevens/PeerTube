@@ -11,6 +11,7 @@ import { TranscriptionRun } from './transcription-run.js'
 export interface TranscribeArgs {
   mediaFilePath: string
   model: TranscriptionModel
+  computeType?: string
   format: TranscriptFormat
   transcriptDirectory: string
 

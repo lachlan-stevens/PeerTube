@@ -10,6 +10,7 @@ export class OpenaiTranscriber extends AbstractTranscriber {
   async transcribe ({
     mediaFilePath,
     model,
+    computeType,
     language,
     format,
     transcriptDirectory,
@@ -20,6 +21,11 @@ export class OpenaiTranscriber extends AbstractTranscriber {
     const $$ = this.getExec(this.getExecEnv())
 
     const languageArgs = language ? [ '--language', language ] : []
+    
+    if (computeType && !['fp16', 'fp32'].includes(computeType)) {
+      this.logger.warn(`Invalid computeType "${computeType}". Expected "fp16" or "fp32". Reverting to default value (--fp16 true)`)
+    }    
+    const floatingpointArgs = computeType === 'fp32' ? [ '--fp16', 'false' ] : []
 
     this.createRun(runId)
     this.startRun()
@@ -34,6 +40,7 @@ export class OpenaiTranscriber extends AbstractTranscriber {
       'all',
       '--output_dir',
       transcriptDirectory,
+      ...floatingpointArgs,
       ...languageArgs
     ]}`
     this.stopRun()
